@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- netstandard2.0 keeps the reach erasure16-dotnet has (including .NET Framework).
+         net8.0 exists only so the symbol XOR - the decoder's hot loop - can use a safe
+         wide span view; see Symbols.XorInto. Both produce identical bytes. -->
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <RootNamespace>LdpcStaircase</RootNamespace>
+    <AssemblyName>LdpcStaircase</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Description>Systematic, fixed-rate LDPC-Staircase erasure code over GF(2), following the RFC 5170 section 6 core. Abstract: symbol bytes in, symbol bytes out.</Description>
+  </PropertyGroup>
+
+</Project>

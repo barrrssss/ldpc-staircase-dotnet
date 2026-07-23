@@ -1,0 +1,3 @@
+[submodule "external/ldpc-staircase-spec"]
+	path = external/ldpc-staircase-spec
+	url = https://github.com/barrrssss/ldpc-staircase-spec.git
