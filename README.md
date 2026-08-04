@@ -1,9 +1,8 @@
 # ldpc-staircase (.NET)
 
 A general-purpose **systematic, fixed-rate LDPC-Staircase erasure code over GF(2)**,
-following the RFC 5170 section 6 core constrained to the profile selected by
-the shared profile
-(`SPEC.md`).
+following the RFC 5170 section 6 core constrained to the profile defined by the
+shared specification.
 Given `K` equal-length source symbols it produces `R` repair symbols by sparse XOR,
 and a decoder reconstructs the source from `K + D` received symbols.
 
@@ -19,9 +18,10 @@ The library is deliberately **abstract** — symbol byte arrays in, symbol byte 
 out. It performs no I/O, compression, encryption, framing, or page layout, and has
 **no runtime dependencies**.
 
-> **Not integrated.** No consuming application integration is included in this repository. The successor
-> encoded set format, the page interleaving, the measured recovery margin, and the
-> counsel-led IPR review of the shared specification all remain open.
+Current package version: **0.1.0**. It implements specification version **0.1.0**.
+See [`CHANGELOG.md`](CHANGELOG.md) for implementation changes and the shared
+specification's [`HISTORY.md`](external/ldpc-staircase-spec/HISTORY.md) for
+cross-implementation decisions.
 
 ## Not an MDS code
 
@@ -34,9 +34,9 @@ received-symbol count.
 
 Measured `D` is in `ldpc-staircase-java`'s `docs/measurements.md`. The short version at
 `K = 2000`, `R = 1000`, `N1 = 7`: about 3 for scattered loss, and about 90 (p95 = 367)
-when the lost symbols are one contiguous run of indices. That gap is the whole argument
-for interleaving source and repair symbols across printed pages, and it belongs to the
-encoded set format rather than to this library.
+when the lost symbols are one contiguous run of indices. That gap is the reason a
+physical transport should interleave source and repair symbols across failure domains;
+the transport layout remains outside this library.
 
 ## Profile (summary)
 
@@ -97,8 +97,8 @@ throw `LdpcStaircaseException`.
 
 ## Cost
 
-Release build, .NET 10, AMD Ryzen 7 5700U, `N1 = 7`, `R = K/2`, `S = 818` (the V32-H QR
-payload of the shared specification):
+Release build, .NET 10, AMD Ryzen 7 5700U, `N1 = 7`, `R = K/2`, `S = 818` (a
+representative medium symbol payload):
 
 | K | R | build | encode | peel decode (R/2 lost) | residual decode (R lost) |
 | --- | --- | --- | --- | --- | --- |
@@ -107,10 +107,10 @@ payload of the shared specification):
 | 5,000 | 2,500 | 9 ms | 10 ms | 11 ms | 268 ms |
 | 10,000 | 5,000 | 16 ms | 23 ms | 23 ms | 3,262 ms |
 
-The last row is the shared specification's motivating case, where dense GF(2¹⁶) Reed-Solomon is
+The last row is a stress case where a dense GF(2¹⁶) Reed–Solomon implementation was
 estimated at about 401 MiB and roughly 1.9 hours. Generation and normal recovery are
-milliseconds; the residual solve at the *full* repair budget is the only expensive path,
-and it is quadratic, which is what `WithMaxResidualUnknowns` exists to bound.
+milliseconds; the residual solve at the *full* repair budget is the only expensive
+path, and it is quadratic, which is what `WithMaxResidualUnknowns` exists to bound.
 
 Reproduce with:
 
@@ -160,5 +160,5 @@ Private, pre-release. The library is intentionally general-purpose and independe
 any consuming product. License TBD before any public release.
 
 Original work written from RFC 5170 and the shared specification. No OpenFEC or other
-third-party codec source was copied; see the shared specification for the provenance and IPR
-guardrails, which are engineering constraints and not a legal opinion.
+third-party codec source was copied. The provenance and IPR guardrails are engineering
+constraints and not a legal opinion.

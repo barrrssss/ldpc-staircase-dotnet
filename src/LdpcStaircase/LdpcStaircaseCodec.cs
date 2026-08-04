@@ -26,7 +26,7 @@ namespace LdpcStaircase
     /// </summary>
     public sealed class LdpcStaircaseCodec
     {
-        /// <summary>The default profile value for <c>N1</c> (the shared specification).</summary>
+        /// <summary>The default profile value for <c>N1</c>.</summary>
         public const int DefaultLeftDegree = ParityCheckMatrix.DefaultLeftDegree;
 
         private static readonly int[] NoIndices = new int[0];

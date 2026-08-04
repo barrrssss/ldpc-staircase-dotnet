@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 namespace LdpcStaircase.Tests
 {
     /// <summary>
-    /// Times matrix construction, encoding, and decoding up to the shared specification's motivating case
+    /// Times matrix construction, encoding, and decoding up to a large stress case
     /// (<c>K = 10,000</c>, <c>R = 5,000</c>, <c>S = 818</c>). Gated off by default; enable with:
     ///
     /// <code>LDPC_BENCH=true dotnet test --filter FullyQualifiedName~DecoderBenchmark</code>
@@ -20,7 +20,7 @@ namespace LdpcStaircase.Tests
     /// </summary>
     public sealed class DecoderBenchmark
     {
-        private const int SymbolLength = 818; // the V32-H QR payload of the shared specification
+        private const int SymbolLength = 818; // representative medium payload
 
         private readonly ITestOutputHelper _output;
 

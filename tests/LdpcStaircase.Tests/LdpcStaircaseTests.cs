@@ -159,8 +159,8 @@ namespace LdpcStaircase.Tests
         }
 
         /// <summary>
-        /// A whole lost sheet is a contiguous run of symbol indices — the correlated damage
-        /// pattern that matters for printed backups.
+        /// One lost transport unit is a contiguous run of symbol indices — a correlated
+        /// physical damage pattern that an interleaved layout exists to break up.
         /// </summary>
         [Fact]
         public void ContiguousBandLossIsRecovered()
