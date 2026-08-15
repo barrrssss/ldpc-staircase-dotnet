@@ -157,7 +157,18 @@ resolves.
 ## Status
 
 Private, pre-release. The library is intentionally general-purpose and independent of
-any consuming product. License TBD before any public release.
+any consuming product.
+
+## License
+
+[Apache License 2.0](LICENSE).
+
+Apache-2.0 was chosen over a shorter permissive licence specifically because this is
+patent-adjacent code: section 3 grants every user an express patent licence from the
+contributors, which MIT, BSD and 0BSD do not, and its defensive-termination clause ends
+that grant for anyone who brings a patent claim over the work. For an erasure codec that
+costs the licensor nothing and is the difference between a user having patent rights and
+having none.
 
 Original work written from RFC 5170 and the shared specification. No OpenFEC or other
 third-party codec source was copied. The provenance and IPR guardrails are engineering
