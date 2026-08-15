@@ -224,7 +224,8 @@ namespace LdpcStaircase
             {
                 progress?.Done();
                 return new DecodeResult(true, DecodeStage.Peeling, state.RecoveredSource,
-                    state.RecoveredTotal, NoIndices, false, 0, 0, -1);
+                    state.RecoveredTotal, NoIndices, false, 0, 0, -1,
+                    state.PeelPasses, state.ResidualSolvePasses);
             }
 
             // Peeling stalled. Everything still unknown is a variable of the residual system:
@@ -253,7 +254,8 @@ namespace LdpcStaircase
                 progress?.Done();
                 return new DecodeResult(false, DecodeStage.Peeling, state.RecoveredSource,
                     state.RecoveredTotal, MissingSourceIndices(symbolPresent, k, missingSource), true,
-                    residualUnknowns, residualRows, -1);
+                    residualUnknowns, residualRows, -1,
+                    state.PeelPasses, state.ResidualSolvePasses);
             }
 
             int rank = ResidualSolve(state, residualUnknowns, residualRows, progress, peelCost,
@@ -265,7 +267,7 @@ namespace LdpcStaircase
             return new DecodeResult(missingSource == 0, DecodeStage.ResidualSolve,
                 state.RecoveredSource, state.RecoveredTotal,
                 MissingSourceIndices(symbolPresent, k, missingSource), false, residualUnknowns,
-                residualRows, rank);
+                residualRows, rank, state.PeelPasses, state.ResidualSolvePasses);
         }
 
         /// <summary>
@@ -383,6 +385,10 @@ namespace LdpcStaircase
             internal int RecoveredSource;
             internal int RecoveredTotal;
 
+            // SPEC.md section 6 stage counters; see DecodeResult.PeelPassCount.
+            internal int PeelPasses;
+            internal int ResidualSolvePasses;
+
             internal DecodeState(LdpcStaircaseCodec codec, byte[][] symbols, bool[] present,
                 int symbolLength)
             {
@@ -439,6 +445,7 @@ namespace LdpcStaircase
         /// <summary>SPEC.md section 6.1 — degree-one peeling to a fixed point.</summary>
         private void Peel(DecodeState state, Progress progress, long peelCost)
         {
+            state.PeelPasses++;
             int[][] rowColumns = _matrix.RowColumnsInternal;
             int[][] columnRows = _matrix.ColumnRowsInternal;
             int[] unknown = state.Unknown;
@@ -540,6 +547,7 @@ namespace LdpcStaircase
         private int ResidualSolve(DecodeState state, int unknownCount, int rowCount,
             Progress progress, long peelCost, long residualCost)
         {
+            state.ResidualSolvePasses++;
             int n = _encodingSymbolCount;
 
             // Map each still-unknown symbol index onto a column of the residual system.

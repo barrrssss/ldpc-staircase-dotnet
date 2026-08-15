@@ -33,7 +33,8 @@ namespace LdpcStaircase
 
         internal DecodeResult(bool isComplete, DecodeStage stage, int recoveredSourceCount,
             int recoveredSymbolCount, int[] missingSourceIndices, bool residualSolveSkipped,
-            int residualUnknownCount, int residualRowCount, int residualRank)
+            int residualUnknownCount, int residualRowCount, int residualRank,
+            int peelPassCount = 0, int residualSolvePassCount = 0)
         {
             IsComplete = isComplete;
             Stage = stage;
@@ -44,6 +45,8 @@ namespace LdpcStaircase
             ResidualUnknownCount = residualUnknownCount;
             ResidualRowCount = residualRowCount;
             ResidualRank = residualRank;
+            PeelPassCount = peelPassCount;
+            ResidualSolvePassCount = residualSolvePassCount;
         }
 
         /// <summary>True when all <c>K</c> source symbols are present after the decode.</summary>
@@ -83,6 +86,25 @@ namespace LdpcStaircase
         /// could not determine every symbol.
         /// </summary>
         public int ResidualRank { get; }
+
+        /// <summary>
+        /// How many times degree-one peeling (SPEC.md section 6.1) ran during this decode.
+        /// <para>
+        /// SPEC.md section 6 requires the decoder to peel to a fixed point and then stop, so
+        /// this is <c>0</c> when nothing was missing and <c>1</c> otherwise — never more. The
+        /// count is reported rather than merely asserted internally because the profile's
+        /// two-stage, non-iterating shape is a deliberate and externally meaningful property;
+        /// see <c>ProfileInvariantsTests</c>, which pins it across a spread of loss patterns.
+        /// </para>
+        /// </summary>
+        public int PeelPassCount { get; }
+
+        /// <summary>
+        /// How many times the residual GF(2) solve (SPEC.md section 6.2) ran during this decode.
+        /// Never more than <c>1</c>: the profile permits at most one solve of the complete
+        /// residual system, and forbids returning to peeling afterwards.
+        /// </summary>
+        public int ResidualSolvePassCount { get; }
 
         /// <summary>True when peeling stalled and the residual solve was attempted.</summary>
         public bool ResidualSolveAttempted => Stage == DecodeStage.ResidualSolve;
