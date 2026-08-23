@@ -18,10 +18,16 @@ The library is deliberately **abstract** — symbol byte arrays in, symbol byte 
 out. It performs no I/O, compression, encryption, framing, or page layout, and has
 **no runtime dependencies**.
 
-Current package version: **0.1.0**. It implements specification version **0.1.0**.
+Current package version: **0.1.2**. It implements specification version **0.1.0**.
 See [`CHANGELOG.md`](CHANGELOG.md) for implementation changes and the shared
 specification's [`HISTORY.md`](external/ldpc-staircase-spec/HISTORY.md) for
 cross-implementation decisions.
+
+After the first NuGet release, install it with:
+
+```sh
+dotnet add package LdpcStaircase --version 0.1.2
+```
 
 ## Not an MDS code
 
@@ -119,9 +125,9 @@ LDPC_BENCH=true dotnet test -c Release --filter FullyQualifiedName~DecoderBenchm
 ```
 
 Run it in **Release**. In Debug the residual solve is about 4× slower, which is enough
-to mislead. The equivalent Java run is roughly 1.6× faster on that column; both are far
-below any product threshold, and the numbers are directly comparable because the two
-benchmarks use the same parameters, loss seeds, and symbol length.
+to mislead. The equivalent Java run is roughly 1.6× faster on that column; the numbers
+are directly comparable because both benchmarks use the same parameters, loss seeds,
+and symbol length.
 
 ## Build and test
 
@@ -144,6 +150,16 @@ equivalent to exact integer arithmetic. The `prngBounded` and `matrix` vectors a
 standing proof that .NET and the JVM agree: the largest matrix case alone consumes over
 1,750 bounded draws, and a single divergent one would change the graph.
 
+Create the NuGet and symbol packages locally with:
+
+```sh
+dotnet pack src/LdpcStaircase/LdpcStaircase.csproj -c Release
+```
+
+The package includes its README, license, notice, changelog, XML documentation,
+repository metadata, and portable symbols. Publication is a deliberate manual step;
+this repository does not define CI.
+
 ## Multi-targeting
 
 The library targets `netstandard2.0` (the reach `erasure16-dotnet` has, including .NET
@@ -156,8 +172,8 @@ resolves.
 
 ## Status
 
-Private, pre-release. The library is intentionally general-purpose and independent of
-any consuming product.
+Pre-1.0 release candidate. The library is intentionally general-purpose and defines
+only symbol-level coding behavior.
 
 ## License
 
@@ -170,6 +186,7 @@ that grant for anyone who brings a patent claim over the work. For an erasure co
 costs the licensor nothing and is the difference between a user having patent rights and
 having none.
 
-Original work written from RFC 5170 and the shared specification. No OpenFEC or other
-third-party codec source was copied. The provenance and IPR guardrails are engineering
-constraints and not a legal opinion.
+This project independently implements the algorithmic profile described by
+[RFC 5170](https://www.rfc-editor.org/rfc/rfc5170.html). No OpenFEC or other
+third-party codec source was copied. See [`NOTICE`](NOTICE) for attribution. The
+provenance and engineering IPR guardrails are not a legal opinion.

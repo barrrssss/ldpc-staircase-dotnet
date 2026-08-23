@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 — 2026-08-23
+
+- Added publication-ready NuGet metadata, package README/license/notice content,
+  XML documentation output, and symbol packages.
+- Aligned the NuGet package version with the Java 0.1.2 implementation release line.
+- No codec behavior, public API, specification, or conformance vector changed.
+
 ## 0.1.0 — 2026-07-23
 
 - Initial .NET implementation of the constrained RFC 5170 LDPC-Staircase profile.
@@ -7,6 +14,3 @@
   paths.
 - Declared the package version explicitly on 2026-08-04; no codec implementation or
   public API changed.
-
-The Java residual-solver optimization released as Java 0.1.1 is not present here, so
-this package correctly remains at 0.1.0 rather than receiving a lockstep version bump.

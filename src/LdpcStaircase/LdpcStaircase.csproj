@@ -7,12 +7,33 @@
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <RootNamespace>LdpcStaircase</RootNamespace>
     <AssemblyName>LdpcStaircase</AssemblyName>
-    <Version>0.1.0</Version>
+    <PackageId>LdpcStaircase</PackageId>
+    <Version>0.1.2</Version>
+    <Authors>barrrssss</Authors>
+    <Title>LDPC Staircase</Title>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
     <Description>Systematic, fixed-rate LDPC-Staircase erasure code over GF(2), following the RFC 5170 section 6 core. Abstract: symbol bytes in, symbol bytes out.</Description>
+    <PackageTags>ldpc;erasure-coding;fec;forward-error-correction;rfc5170</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/barrrssss/ldpc-staircase-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/barrrssss/ldpc-staircase-dotnet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\NOTICE" Pack="true" PackagePath="\" />
+    <None Include="..\..\CHANGELOG.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
