@@ -150,6 +150,23 @@ equivalent to exact integer arithmetic. The `prngBounded` and `matrix` vectors a
 standing proof that .NET and the JVM agree: the largest matrix case alone consumes over
 1,750 bounded draws, and a single divergent one would change the graph.
 
+`ReferenceCorpusTests` is the independent-oracle gate of specification decision 0002.
+Agreement between the two runtimes cannot rule out one shared misreading of `SPEC.md`,
+because `ldpc-staircase-java` also generates the vectors both suites check against. The
+spec repo therefore carries a dependency-free Python checker derived from the
+specification rather than from either implementation, plus a differential corpus at
+`external/ldpc-staircase-spec/reference/corpus.json`. This suite runs that corpus through
+the .NET codec and compares every field with the checker's own answer.
+
+It needs Python 3.11+ on `PATH` and runs the checker as an ordinary subprocess. Without
+an interpreter the corpus check reports a skip so a developer build still runs; the
+release gate turns that into a failure:
+
+```sh
+LDPC_REFERENCE_CORPUS_REQUIRED=1 dotnet test LdpcStaircase.sln
+LDPC_PYTHON=/path/to/python3 dotnet test LdpcStaircase.sln
+```
+
 Create the NuGet and symbol packages locally with:
 
 ```sh
