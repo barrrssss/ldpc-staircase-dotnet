@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Tracked the specification's extended differential corpus. The 2026-09-01 independence
+  review found that `SPEC.md` section 4.3, which raises rows of left degree below two,
+  added no entry in any committed vector or any corpus case — so two implementations could
+  have disagreed about it entirely without any gate noticing. Five corpus cases now
+  exercise both of its branches, and this implementation agrees with the independent
+  reference checker on all 36 cases.
+- Adopted the `SPEC.md` section 2 clarification that `N1 >= 1` is required always, not only
+  when `R >= 1`. This implementation already enforced it; the specification now states it.
+  No behavior changed.
+
 - Added `ReferenceCorpusTests`, the independent-oracle gate of specification decision
   0002. It runs the differential corpus committed at
   `external/ldpc-staircase-spec/reference/corpus.json` through this codec and compares
