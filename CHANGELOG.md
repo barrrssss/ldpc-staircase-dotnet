@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Adopted specification **0.1.1**. It adds three matrix vectors and one encode vector that
+  exercise `SPEC.md` section 4.3, the low-degree-raising pass that no committed vector
+  previously caused to add a single entry. Every 0.1.0 vector is byte-identical at 0.1.1,
+  so this implementation passes unchanged; the new cases simply cover ground that was
+  uncovered.
+- Adopted the section 6 correction: decoding recovers and reports every symbol the
+  received set determines, with completion still judged on the source symbols alone.
+  Section 6 had said reconstructing missing repair symbols was not required, which
+  contradicted `dec-all-repair-missing`. This implementation already did the right thing.
+
 - Tracked the specification's extended differential corpus. The 2026-09-01 independence
   review found that `SPEC.md` section 4.3, which raises rows of left degree below two,
   added no entry in any committed vector or any corpus case — so two implementations could
