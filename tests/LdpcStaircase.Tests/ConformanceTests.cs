@@ -107,7 +107,7 @@ namespace LdpcStaircase.Tests
         public void ManifestPresentAndWellFormed()
         {
             JsonElement root = Manifest;
-            Assert.Equal(1, root.GetProperty("manifestVersion").GetInt32());
+            Assert.Equal(2, root.GetProperty("manifestVersion").GetInt32());
             foreach (string section in new[] { "prngRaw", "prngBounded", "matrix", "encode", "decode", "files" })
             {
                 JsonElement value = root.GetProperty(section);
@@ -257,7 +257,7 @@ namespace LdpcStaircase.Tests
                     present[i] = true;
                 }
 
-                foreach (int index in IntArray(testCase.GetProperty("missing")))
+                foreach (int index in MissingIndices(name, testCase))
                 {
                     present[index] = false;
                 }
@@ -295,6 +295,43 @@ namespace LdpcStaircase.Tests
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// A decode case's missing-index list, in whichever of the two forms of SPEC.md section 7
+        /// it carries: inline <c>missing</c>, or a <c>missingBlob</c> of big-endian <c>u32</c>
+        /// indices. Exactly one must be present — a case whose form this reader does not
+        /// understand must fail loudly rather than decode a set it silently treated as complete.
+        /// </summary>
+        private static int[] MissingIndices(string name, JsonElement testCase)
+        {
+            bool hasInline = testCase.TryGetProperty("missing", out JsonElement inline);
+            bool hasBlob = testCase.TryGetProperty("missingBlob", out JsonElement blob);
+            Assert.True(hasInline ^ hasBlob,
+                name + ": exactly one of missing / missingBlob must be present");
+
+            if (hasInline)
+            {
+                return IntArray(inline);
+            }
+
+            byte[] bytes = LoadBin(blob.GetString());
+            Assert.True(bytes.Length % 4 == 0, name + ": missingBlob length must be a multiple of 4");
+            var missing = new int[bytes.Length / 4];
+            for (int i = 0; i < missing.Length; i++)
+            {
+                missing[i] = (bytes[i * 4] << 24)
+                    | (bytes[(i * 4) + 1] << 16)
+                    | (bytes[(i * 4) + 2] << 8)
+                    | bytes[(i * 4) + 3];
+            }
+
+            for (int i = 1; i < missing.Length; i++)
+            {
+                Assert.True(missing[i] > missing[i - 1], name + ": missingBlob must be strictly ascending");
+            }
+
+            return missing;
         }
 
         /// <summary>One encode case's parameters and committed symbol blobs.</summary>

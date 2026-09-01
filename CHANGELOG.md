@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Adopted specification **0.1.2**. It adds production-scale vectors at `K = 16000`,
+  `R = 8192`, `N1 = 7` — one matrix, one encode, and two decode cases. This implementation
+  verified no shared vector above `K = 250` before; it now reproduces the matrix
+  serialization, the repair bytes, and both decode outcomes at the top of the calibrated
+  envelope, including a residual solve thousands of unknowns wide. No library change was
+  needed: the vectors passed on the first run.
+- `ConformanceTests` reads the `missingBlob` form of a decode case's missing list and
+  expects `manifestVersion` 2. A case must carry exactly one of `missing` / `missingBlob`;
+  a reader that silently skipped the field it did not understand would report a pass on a
+  decode it never ran.
+
 - Adopted specification **0.1.1**. It adds three matrix vectors and one encode vector that
   exercise `SPEC.md` section 4.3, the low-degree-raising pass that no committed vector
   previously caused to add a single entry. Every 0.1.0 vector is byte-identical at 0.1.1,
