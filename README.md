@@ -18,7 +18,7 @@ The library is deliberately **abstract** — symbol byte arrays in, symbol byte 
 out. It performs no I/O, compression, encryption, framing, or page layout, and has
 **no runtime dependencies**.
 
-Current package version: **0.1.2**. It implements specification version **0.1.0**.
+Current package version: **0.1.3**. It implements specification version **0.1.2**.
 See [`CHANGELOG.md`](CHANGELOG.md) for implementation changes and the shared
 specification's [`HISTORY.md`](external/ldpc-staircase-spec/HISTORY.md) for
 cross-implementation decisions.
@@ -26,7 +26,7 @@ cross-implementation decisions.
 After the first NuGet release, install it with:
 
 ```sh
-dotnet add package LdpcStaircase --version 0.1.2
+dotnet add package LdpcStaircase --version 0.1.3
 ```
 
 ## Not an MDS code

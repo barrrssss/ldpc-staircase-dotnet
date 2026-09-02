@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.3 — 2026-09-02
 
+- Codec behavior and public API are unchanged from 0.1.2. This release adopts a
+  production-scale conformance corpus; the graph construction, the encoder, and the
+  decoder behave exactly as they did at 0.1.2.
 - Adopted specification **0.1.2**. It adds production-scale vectors at `K = 16000`,
   `R = 8192`, `N1 = 7` — one matrix, one encode, and two decode cases. This implementation
   verified no shared vector above `K = 250` before; it now reproduces the matrix
